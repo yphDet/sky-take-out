@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 根据分页查询接口设计对应的DTO
+ */
 @Data
 public class EmployeePageQueryDTO implements Serializable {
 
