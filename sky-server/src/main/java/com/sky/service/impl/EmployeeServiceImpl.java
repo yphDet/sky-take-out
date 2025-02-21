@@ -28,6 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
         String password = employeeLoginDTO.getPassword();
+        System.out.println("前端传过来的明文密码：" + password);
 
         //1、根据用户名查询数据库中的数据
         Employee employee = employeeMapper.getByUsername(username);
@@ -39,8 +40,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         //密码比对
-        // TODO 后期需要进行md5加密，然后再进行比对
-        if (!password.equals(employee.getPassword())) {
+        // 对前端传过来的明文密码进行md5加密处理
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        System.out.println("后端对前端进行md5处理：" + password);
+        System.out.println("用户数据库中的密码：" + employee.getPassword());
+        System.out.println("密码比对：" + password.equals(employee.getPassword()));
+
+        if (! password.equals(employee.getPassword())) {
             //密码错误
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
         }
