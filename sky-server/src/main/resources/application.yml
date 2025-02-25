@@ -19,6 +19,7 @@ spring:
     database: ${sky.redis.database}
 
 
+
 mybatis:
   #mapper配置文件
   mapper-locations: classpath:mapper/*.xml
@@ -37,14 +38,22 @@ logging:
 
 sky:
   jwt:
+      # 管理端jwt
     # 设置jwt签名加密时使用的秘钥
     admin-secret-key: itcast
     # 设置jwt过期时间
     admin-ttl: 7200000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+      # 用户端jwt
+    user-secret-key: itcast
+    user-ttl: 7200000
+    user-token-name: authentication
   alioss:
     endpoint: ${sky.alioss.endpoint}
     access-key-id: ${access-key-id}
     access-key-secret: ${access-key-secret}
     bucket-name: ${bucket-name}
+  wechat:
+    appid: ${sky.wechat.appid}
+    secret: ${sky.wechat.secret}
