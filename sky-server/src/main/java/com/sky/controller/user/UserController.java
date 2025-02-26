@@ -36,7 +36,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    @ApiOperation("登录")
+    @ApiOperation("用户登录")
     public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO){
         log.info("微信用户登录，授权码：{}",userLoginDTO.getCode());
 
