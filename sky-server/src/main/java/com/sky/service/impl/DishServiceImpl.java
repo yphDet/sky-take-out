@@ -165,8 +165,8 @@ public class DishServiceImpl implements DishService {
             flavors.forEach(dishFlavor -> {
                 dishFlavor.setDishId(dishDTO.getId());
             });
-            dishFlavorMapper.insertBatch(flavors);
         }
+        dishFlavorMapper.insertBatch(flavors);
     }
 
     /**

@@ -139,5 +139,60 @@ public class SetmealServiceImpl implements SetmealService {
 
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
+    public SetmealVO getByIdWithDish(Long id) {
+        Setmeal setmeal = setmealMapper.getById(id);
+        List<SetmealDish> setmealDishes = setmealDishMapper.getBySetmeal(id);
+
+        SetmealVO setmealVO = new SetmealVO();
+        BeanUtils.copyProperties(setmeal,setmealVO);
+        setmealVO.setSetmealDishes(setmealDishes);
+        return setmealVO;
+    }
+
+
+    public void updateWithDish(SetmealDTO setmealDTO) {
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO,setmeal);
+
+        //  修改套餐表
+        setmealMapper.update(setmeal);
+
+        // 修改套餐菜品关系表
+        /**
+         * 逻辑：1、删除原有的关系数据   2、重新插入关系数据
+         */
+        //  删除当前套餐菜品关联的数据，操作setmeal_dish表，执行delete操作
+        setmealDishMapper.deleteBySetmealId(setmealDTO.getId());;
+
+        //  插入最新的菜品数据
+        List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
+        if(setmealDishes != null && setmealDishes.size() > 0){
+            setmealDishes.forEach(setmealDish -> {
+                setmealDish.setSetmealId(setmeal.getId());
+            });
+        }
+        setmealDishMapper.insertBatch(setmealDishes);
+
+    }
+
+    /**
+     * 起售停售套餐
+     * @param status
+     * @param id
+     */
+    public void startOrStop(Integer status, Long id) {
+        Setmeal setmeal = Setmeal.builder()
+                .id(id)
+                .status(status)
+                .build();
+
+        setmealMapper.update(setmeal);
+    }
+
 
 }
