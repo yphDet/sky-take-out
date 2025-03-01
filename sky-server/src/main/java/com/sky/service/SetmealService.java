@@ -24,4 +24,16 @@ public interface SetmealService {
      */
     List<DishItemVO> getDishItemById(Long id);
 
+    /**
+     * 新增套餐
+     * @param setmealDTO
+     */
+    void saveWithDish(SetmealDTO setmealDTO);
+
+    /**
+     * 套餐分页查询
+     * @param setmealPageQueryDTO
+     * @return
+     */
+    PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
 }

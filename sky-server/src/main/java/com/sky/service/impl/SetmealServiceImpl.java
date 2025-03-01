@@ -57,4 +57,49 @@ public class SetmealServiceImpl implements SetmealService {
     public List<DishItemVO> getDishItemById(Long id) {
         return setmealMapper.getDishItemBySetmealId(id);
     }
+
+    /**
+     * 新镇套餐与对应的菜品
+     * @param setmealDTO
+     */
+    @Transactional  //  事务管理
+    public void saveWithDish(SetmealDTO setmealDTO) {
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO,setmeal);
+
+        /**
+         * 主键显示
+         *      useGeneratedKeys    自动生成主键
+         *      keyProperty         返回对应字段的值
+         */
+        //  向套餐表中插入1条数据
+        setmealMapper.insert(setmeal);
+        //  获取insert语句生成的主键值
+        Long setmealId = setmeal.getId();
+
+        List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
+
+        if(setmealDishes != null && setmealDishes.size() > 0){
+            //  为该套餐中的菜品附上套餐id
+            setmealDishes.forEach(setmealDish -> {
+                setmealDish.setSetmealId(setmealId);
+            });
+        }
+        //  向 套餐菜品关系表 插入n条数据    ----    批量插入
+        setmealDishMapper.insertBatch(setmealDishes);
+    }
+
+    /**
+     *
+     * @param setmealPageQueryDTO
+     * @return
+     */
+    public PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO) {
+        //  分页查询
+        PageHelper.startPage(setmealPageQueryDTO.getPage(),setmealPageQueryDTO.getPageSize());
+
+        Page<SetmealVO> page = setmealMapper.pageQuery(setmealPageQueryDTO);
+
+        return new PageResult(page.getTotal(),page.getResult());
+    }
 }
