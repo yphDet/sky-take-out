@@ -102,4 +102,42 @@ public class SetmealServiceImpl implements SetmealService {
 
         return new PageResult(page.getTotal(),page.getResult());
     }
+
+    /**
+     * 批量删除套餐
+     * @param ids
+     */
+
+    @Transactional
+    public void deleteBatch(List<Long> ids) {
+        //  判断当前套餐是否在起售中  ----  是否可以删除
+        for (Long id : ids) {
+            Setmeal setmeal = setmealMapper.getById(id);
+            if(setmeal.getStatus() == StatusConstant.ENABLE){
+                //  当前套餐处于售卖中，不能删除
+                throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ON_SALE);
+            }
+        }
+
+        //
+//        ids.forEach(setmealId ->{
+//            //  删除套餐中的数据
+//            setmealMapper.deleteById(setmealId);
+//
+//            //  删除套餐餐品关系表中的数据
+//            setmealDishMapper.deleteBySetmealId(setmealId);
+//        });
+
+        /**
+         * 优化
+         */
+        //  删除套餐表中的数据
+        setmealMapper.deleteByIds(ids);
+
+        //  删除套餐菜品关系表中的数据
+        setmealDishMapper.deleteBySetmealIds(ids);
+
+    }
+
+
 }

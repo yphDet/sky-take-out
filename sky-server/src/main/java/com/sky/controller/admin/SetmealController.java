@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/admin/setmeal")
 @Slf4j
@@ -21,7 +23,7 @@ public class SetmealController {
     private SetmealService setmealService;
 
     //  新增套餐
-    @PostMapping
+    @PostMapping        //  url ? 请求参数
     @ApiOperation("添加套餐")
     public Result save(@RequestBody SetmealDTO setmealDTO){
         log.info("新增套餐：{}",setmealDTO);
@@ -40,6 +42,13 @@ public class SetmealController {
     }
 
     //  删除套餐
+    @DeleteMapping
+    @ApiOperation("批量删除套餐")
+    public Result delete(@RequestParam List<Long> ids){
+        setmealService.deleteBatch(ids);
+        return Result.success();
+    }
+
     //  修改套餐
     //  起售停售套餐
 }
