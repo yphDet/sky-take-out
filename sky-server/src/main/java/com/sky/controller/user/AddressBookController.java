@@ -27,7 +27,7 @@ public class AddressBookController {
     @ApiOperation("查询当前登录用户的所有地址信息")
     public Result<List<AddressBook>> list() {
         AddressBook addressBook = new AddressBook();
-        addressBook.setUserId(BaseContext.getCurrentId());
+        addressBook.setUserId(BaseContext.getCurrentId());  //  查询当前登录用户的所有地址信息
         List<AddressBook> list = addressBookService.list(addressBook);
         return Result.success(list);
     }

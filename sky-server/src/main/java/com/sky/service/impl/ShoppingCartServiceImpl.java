@@ -50,6 +50,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCart.setUserId(BaseContext.getCurrentId());
 
         //  判断当前商品是否在购物车【购物车表中有number字段，若该商品在购物车中增加数量，否则插入该商品数据】
+        /**
+         * 购物车表的设计：商品与用户进行关联
+         *      联系一下：收银员扫描商品的条形码，之后在收银界面的展现形式；
+         */
         List<ShoppingCart> shoppingCartlist = shoppingCartMapper.list(shoppingCart);
 
         if(shoppingCartlist != null && shoppingCartlist.size() > 0){

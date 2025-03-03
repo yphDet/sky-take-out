@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("userShoppingCartController")
 @RequestMapping("/user/shoppingCart")
 @Slf4j
 @Api(tags = "C端-购物车接口")
