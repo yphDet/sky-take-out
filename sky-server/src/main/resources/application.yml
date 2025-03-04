@@ -17,6 +17,17 @@ spring:
     port: ${sky.redis.port}
     password: ${sky.redis.password}
     database: ${sky.redis.database}
+#      微信支付相关配置
+#  wechat:
+#    appid:
+#    secret:
+#    mchid:
+#    mchSerialNo:
+#    privateKeyFilePath:
+#    apiV3Key:
+#    wechatPayCertFilePath:
+#    notifyUrl:
+#    refundNotifyUrl:
 
 
 

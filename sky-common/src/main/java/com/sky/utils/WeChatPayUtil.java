@@ -137,7 +137,7 @@ public class WeChatPayUtil {
         jsonObject.put("mchid", weChatProperties.getMchid());
         jsonObject.put("description", description);
         jsonObject.put("out_trade_no", orderNum);
-        jsonObject.put("notify_url", weChatProperties.getNotifyUrl());
+        jsonObject.put("notify_url", weChatProperties.getNotifyUrl());  // 回调地址
 
         JSONObject amount = new JSONObject();
         amount.put("total", total.multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).intValue());
@@ -165,7 +165,7 @@ public class WeChatPayUtil {
      */
     public JSONObject pay(String orderNum, BigDecimal total, String description, String openid) throws Exception {
         //统一下单，生成预支付交易单
-        String bodyAsString = jsapi(orderNum, total, description, openid);
+        String bodyAsString = jsapi(orderNum, total, description, openid);      //  返回  微信下单接口  的响应信息
         //解析返回结果
         JSONObject jsonObject = JSON.parseObject(bodyAsString);
         System.out.println(jsonObject);
@@ -192,7 +192,7 @@ public class WeChatPayUtil {
             signature.update(message);
             String packageSign = Base64.getEncoder().encodeToString(signature.sign());
 
-            //构造数据给微信小程序，用于调起微信支付
+            //构造数据给微信小程序，用于调起   微信支付
             JSONObject jo = new JSONObject();
             jo.put("timeStamp", timeStamp);
             jo.put("nonceStr", nonceStr);
