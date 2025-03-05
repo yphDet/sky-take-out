@@ -41,9 +41,17 @@ public interface OrderMapper {
     List<Orders> getByStatusAndOrdertimeLT(Integer pendingPayment, LocalDateTime time);
 
     /**
-     *
+     *  分页查询订单历史
      * @param ordersPageQueryDTO
      * @return
      */
     Page<Orders> pageQuery(OrdersPageQueryDTO ordersPageQueryDTO);
+
+    /**
+     * 根据订单号查询订单
+     * @param id
+     * @return
+     */
+    @Select("select * from orders where id = #{id}")
+    Orders getById(Long id);
 }
