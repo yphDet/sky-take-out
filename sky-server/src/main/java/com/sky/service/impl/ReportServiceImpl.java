@@ -1,10 +1,14 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
+import com.sky.result.PageResult;
 import com.sky.service.ReportService;
 import com.sky.vo.OrderReportVO;
+import com.sky.vo.SalesTop10ReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +21,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReportServiceImpl implements ReportService {
@@ -78,12 +83,8 @@ public class ReportServiceImpl implements ReportService {
                 .build();
     }
 
-    @Override
+
     public OrderReportVO getOrders(LocalDate begin, LocalDate end) {
-
-
-
-
         ArrayList<LocalDate> dateList = new ArrayList<>();
 
         if (begin != end) {
@@ -165,6 +166,21 @@ public class ReportServiceImpl implements ReportService {
                 .dateList(StringUtils.join(dateList, ","))
                 .newUserList(StringUtils.join(newUserList, ","))
                 .totalUserList(StringUtils.join(totalUserList, ","))
+                .build();
+    }
+
+    public SalesTop10ReportVO getTop(LocalDate begin, LocalDate end) {
+        LocalDateTime beginTime = LocalDateTime.of(begin, LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
+
+        List<GoodsSalesDTO> goodsSalesDTOList = orderMapper.getSalesTop10(beginTime,endTime);
+
+        List<String> nameList = goodsSalesDTOList.stream().map(GoodsSalesDTO::getName).collect(Collectors.toList());
+        List<Integer> numberList = goodsSalesDTOList.stream().map(GoodsSalesDTO::getNumber).collect(Collectors.toList());
+
+        return SalesTop10ReportVO.builder()
+                .nameList(StringUtils.join(nameList,","))
+                .numberList(StringUtils.join(numberList,","))
                 .build();
     }
 }
