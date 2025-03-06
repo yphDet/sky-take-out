@@ -65,4 +65,13 @@ public interface OrderMapper {
      * @return
      */
     Double sumByMap(HashMap map);
+
+    /**
+     *
+     * @param status
+     * @param begin
+     * @param end
+     * @return
+     */
+    Integer getByTime(Integer status, LocalDateTime begin, LocalDateTime end);
 }
